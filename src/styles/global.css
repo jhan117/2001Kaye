@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+/* Color Variables */
+:root {
+  /* Primary Colors */
+  --primary-900: #27374d;
+  --primary-800: #3a4c66;
+  --primary-700: #495f7c;
+  --primary-600: #5a7294;
+  --primary-500: #6981a6;
+  --primary-400: #7f94b6;
+  --primary-300: #94a8c7;
+  --primary-200: #b0c1dc;
+  --primary-100: #cadaf1;
+  --primary-50: #e8f0ff;
+
+  /* Grayscale Colors */
+  --gray-900: #1c1c1c;
+  --gray-800: #333333;
+  --gray-700: #4d4d4d;
+  --gray-600: #666666;
+  --gray-500: #808080;
+  --gray-400: #999999;
+  --gray-300: #b3b3b3;
+  --gray-200: #cccccc;
+  --gray-100: #e5e5e5;
+  --gray-50: #f2f2f2;
+
+  /* Semantic Colors */
+  --success-color: #27c088;
+  --warning-color: #ffab00;
+  --error-color: #e65b5b;
+  --info-color: #5e90fc;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+/* Font Settings */
+/* max-width: 22.5rem(360px) */
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  height: 100%;
+}
+
+.title-lg {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 600; /* semibold */
+  line-height: 120%;
+}
+
+.title-md {
+  font-size: 1.625rem; /* 26px */
+  font-weight: 600; /* semibold */
+  line-height: 120%;
+}
+
+.title-sm {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600; /* semibold */
+  line-height: 130%;
+}
+
+.text-lg {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600; /* semibold */
+  line-height: 140%;
+}
+
+.text-md {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 400; /* regular */
+  line-height: 140%;
+}
+
+.text-sm {
+  font-size: 1rem; /* 16px */
+  font-weight: 400; /* regular */
+  line-height: 140%;
+}
+
+.caption {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 400; /* regular */
+  line-height: 140%;
+}
+
+/* Tablet Breakpoint: 414px */
+/* max-width: 48rem(768px) */
+@media (min-width: 25.875rem) {
+  .title-lg {
+    font-size: 2.5rem; /* 40px */
+  }
+
+  .title-md {
+    font-size: 2rem; /* 32px */
+  }
+
+  .title-sm {
+    font-size: 1.375rem; /* 22px */
+  }
+
+  .text-md {
+    font-size: 1rem; /* 16px */
+  }
+
+  .text-sm {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .caption {
+    font-size: 0.75rem; /* 12px */
+  }
+}
+
+/* Desktop Breakpoint: 820px */
+/* max-width: 75rem(1200px) */
+@media (min-width: 51.25rem) {
+  .title-lg {
+    font-size: 3rem; /* 48px */
+  }
+
+  .title-md {
+    font-size: 2.25rem; /* 36px */
+  }
+
+  .title-sm {
+    font-size: 1.5rem; /* 24px */
+  }
+}
