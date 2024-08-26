@@ -1,0 +1,22 @@
+---
+import IconLink from "./ui/IconLink.astro"
+
+import styles from "@styles-components/header.module.css"
+---
+
+<header class={styles.headerWrapper}>
+	<div class={styles.headerContent}>
+		<IconLink className={styles.logoLink} icon="house" text="2001Kaye" />
+		<nav class={styles.navigation}>
+			<a>Home</a>
+			<a>Categories</a>
+			<a>Archive</a>
+			<a>About</a>
+		</nav>
+		<div class={styles.actions}>
+			<IconLink className={styles.searchButton} icon="magnifying-glass" text="Search"/>
+			<IconLink className={styles.themeToggle} icon="moon" />
+			<IconLink className={styles.menuButton} icon="bars" />
+		</div>
+	</div>
+</header>
