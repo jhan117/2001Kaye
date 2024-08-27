@@ -1,14 +1,16 @@
 ---
 interface Props {
     className: string;
+    link: string;
     icon: string;
     text?: string;
 }
 
-const {className, icon, text} = Astro.props;
+const {className, link, icon, text} = Astro.props;
 ---
 
-<a class={className}>
-    <i class={`fa-solid fa-${icon}`} />
-    {text && <p>{text}</p>}
+<a class={className} href={link}>
+	<i class={`fa-solid fa-${icon}`} />
+	{text && <p>{text}</p>}
 </a>
+  

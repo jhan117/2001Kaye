@@ -38,10 +38,12 @@
   font: inherit;
   color: inherit;
   box-sizing: border-box;
+  list-style: none;
 }
 
 a {
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* Font Settings */

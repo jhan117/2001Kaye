@@ -21,6 +21,9 @@
       "@styles-components/*": [
         "src/styles/components/*"
       ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
     }
   }
 }
