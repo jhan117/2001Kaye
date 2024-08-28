@@ -1,0 +1,17 @@
+---
+import PostNavItem from "./ui/PostNavItem.astro";
+
+import styles from "@styles-components/postNav.module.css";
+
+interface Props {
+  prevPost?: Post;
+  nextPost?: Post;
+}
+
+const { prevPost, nextPost } = Astro.props;
+---
+
+<ul class={styles.list}>
+	{prevPost && <PostNavItem post={prevPost} icon="left" />}
+	{nextPost && <PostNavItem post={nextPost} icon="right" />}
+</ul>
