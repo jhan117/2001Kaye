@@ -1,0 +1,24 @@
+---
+import PostNav from "@components/PostNav.astro";
+import PostHeader from "@components/PostHeader.astro";
+
+import styles from "@styles-layouts/postLayout.module.css";
+
+interface Props {
+  currPost: Post;
+  prevPost?: Post;
+  nextPost?: Post;
+}
+
+const { currPost, prevPost, nextPost } = Astro.props;
+---
+
+<main>
+  <div class={styles.post}>
+    <PostHeader currPost={currPost} />
+    <div class={styles.content}>
+      <slot />
+    </div>
+  </div>
+  <PostNav prevPost={prevPost} nextPost={nextPost} />
+</main>

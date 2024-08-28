@@ -1,0 +1,18 @@
+---
+import styles from "@styles-components/ui/postNavItem.module.css";
+
+interface Props {
+	post: Post;
+	icon: string;
+}
+
+const { post, icon } = Astro.props;
+---
+
+<a href={post?.slug}>
+  <li class={`${styles.item} ${icon === "left" ? "" : styles.rightItem}`}>
+    {icon === "left" && <i class="fa-solid fa-chevron-left" />}
+    {post?.data.title}
+    {icon === "right" && <i class="fa-solid fa-chevron-right" />}
+  </li>
+</a>

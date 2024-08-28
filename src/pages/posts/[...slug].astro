@@ -3,7 +3,8 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 
 import Layout from "@layouts/Layout.astro"
-import { formatDate, timeSince } from "@utils/dateUtils";
+import PostLayout from "@layouts/PostLayout.astro";
+
 import sortPostsByPubDate from "@utils/postUtils";
 
 export const getStaticPaths = (async () => {
@@ -13,35 +14,18 @@ export const getStaticPaths = (async () => {
     params: { slug: post.slug },
     props: {
       post,
-      prevPost: idx + 1 === postsCount ? null : posts[idx + 1],
-      nextpost: idx === 0 ? null : posts[idx - 1],
+      prevPost: idx + 1 === postsCount ? undefined : posts[idx + 1],
+      nextPost: idx === 0 ? undefined : posts[idx - 1],
     },
   }));
 }) satisfies GetStaticPaths;
 
-const { post, prevPost, nextpost } = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await post.render();
 ---
 
 <Layout>
-  <p>{timeSince(post.data.pubDate)}</p>
-  <h1>{post.data.title}</h1>
-  <p>{formatDate(post.data.pubDate)}</p>
-  <Content />
-  <div>
-    <ul>
-      <li>
-        <a href={prevPost?.slug}>
-          <i class="fa-solid fa-chevron-left" />
-          {prevPost?.data.title}
-        </a>
-      </li>
-      <li>
-        <a href={nextpost?.slug}>
-          <i class="fa-solid fa-chevron-right" />
-          {nextpost?.data.title}
-        </a>
-      </li>
-    </ul>
-  </div>
+  <PostLayout currPost={post} prevPost={prevPost} nextPost={nextPost}>
+    <Content />
+  </PostLayout>
 </Layout>

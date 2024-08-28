@@ -1,0 +1,33 @@
+---
+import MetaInfo from "./ui/MetaInfo.astro";
+
+import styles from "@styles-components/postList.module.css";
+
+import { timeSince } from "@utils/dateUtils";
+
+interface Props {
+  data: Post[];
+}
+
+const { data } = Astro.props;
+---
+
+<div class={styles.container}>
+  <ul class={styles.list}>
+    {data.map((post, idx) => (
+      <li
+        class={`${styles.item} ${idx === data.length - 1 ? styles.lastItem : ""}`}
+      >
+        <a href={`posts/${post.slug}`} class={styles.title}>
+          <h1>{post.data.title}</h1>
+          <i class="fa-solid fa-angle-right" />
+        </a>
+        <MetaInfo pubDate={post.data.pubDate} category={post.data.category} />
+        <div>
+          <p>{post.data.description}</p>
+          <p class={styles.time}>{timeSince(post.data.pubDate)}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>

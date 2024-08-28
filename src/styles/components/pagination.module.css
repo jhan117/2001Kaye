@@ -1,0 +1,42 @@
+.container {
+  padding: 0 1rem;
+  border-radius: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.5rem;
+  justify-content: center;
+}
+
+.item {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--primary-800);
+  border-radius: 0.5rem;
+}
+
+.item:hover {
+  background-color: var(--primary-700);
+}
+
+.item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.currentItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--info-color);
+  border-radius: 0.5rem;
+
+  color: var(--gray-800);
+}

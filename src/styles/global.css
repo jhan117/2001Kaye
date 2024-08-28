@@ -5,7 +5,7 @@
   /* Primary Colors */
   --primary-900: hsl(210, 20%, 10%); /* dark mode bg */
   --primary-800: hsl(210, 20%, 20%); /* dark mode components bg */
-  --primary-700: hsl(210, 20%, 30%);
+  --primary-700: hsl(210, 20%, 30%); /* dark mode hover */
   --primary-600: hsl(210, 20%, 40%);
   --primary-500: hsl(210, 20%, 50%);
   --primary-400: hsl(210, 20%, 60%);
@@ -56,6 +56,23 @@ body {
   justify-content: space-between;
   background-color: var(--primary-900);
   color: var(--gray-200);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  width: 100%;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 @media (min-width: 42rem) {

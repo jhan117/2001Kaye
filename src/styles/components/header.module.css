@@ -59,7 +59,7 @@
 .logoLink:hover,
 .actions a:hover,
 .navigation a:hover {
-  background-color: var(--primary-600);
+  background-color: var(--primary-700);
   border-radius: 0.5rem;
   color: var(--info-color);
 }

@@ -1,0 +1,27 @@
+---
+import type { Page } from 'astro';
+
+import styles from "@styles-components/pagination.module.css";
+
+interface Props {
+	page: Page;
+}
+
+const { page } = Astro.props;
+---
+
+<div class={styles.container}>
+  <ul class={styles.list}>
+    <li class={styles.item}>
+      <a href={page.url.prev}>
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+    </li>
+    <li class={styles.currentItem}>{page.currentPage}</li>
+    <li class={styles.item}>
+      <a href={page.url.next}>
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
+    </li>
+  </ul>
+</div>

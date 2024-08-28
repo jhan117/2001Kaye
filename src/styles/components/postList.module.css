@@ -1,0 +1,39 @@
+.container {
+  padding: 0 1rem;
+
+  background-color: var(--primary-800);
+  border-radius: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.lastItem {
+  border-bottom: none !important;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--gray-600);
+  row-gap: 0.5rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0.5rem;
+  align-items: center;
+}
+
+.title:hover {
+  color: var(--info-color);
+}
+
+.time {
+  font-size: 0.75rem;
+  color: var(--gray-300);
+}
