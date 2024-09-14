@@ -1,25 +1,25 @@
 ---
 import styles from "@styles-components/ui/metaInfo.module.css";
 
-import { formatDate } from "@utils/dateUtils";
+import {formatDate} from "@utils/dateUtils";
 
 interface Props {
-  pubDate: Date;
-  category: string;
+    pubDate: Date;
+    category: string;
 }
 
-const { pubDate, category } = Astro.props;
+const {pubDate, category} = Astro.props;
 ---
 
 <div class={styles.metaInfo}>
-  <div class={styles.date}>
-    <i class="fa-solid fa-calendar" />
-    <p>{formatDate(pubDate)}</p>
-  </div>
-  <div class={styles.category}>
-    <i class="fa-solid fa-layer-group" />
-    <a href="">
-      <p>{category}</p>
-    </a>
-  </div>
+    <div class={styles.date}>
+        <i class="fa-solid fa-calendar"/>
+        <p>{formatDate(pubDate)}</p>
+    </div>
+    <div class={styles.category}>
+        <i class="fa-solid fa-layer-group"/>
+        <a href="">
+            <p>{category}</p>
+        </a>
+    </div>
 </div>

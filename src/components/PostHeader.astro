@@ -3,22 +3,22 @@ import MetaInfo from "./ui/MetaInfo.astro";
 
 import styles from "@styles-components/postHeader.module.css";
 
-import { timeSince } from "@utils/dateUtils";
+import {timeSince} from "@utils/dateUtils";
 
 interface Props {
-  currPost: Post;
+    currPost: Post;
 }
 
-const { currPost } = Astro.props;
+const {currPost} = Astro.props;
 ---
 
 <div class={styles.header}>
-  <div>
-    <div class={styles.time}>
-      <i class="fa-solid fa-clock" />
-      <p class={styles.time}>{timeSince(currPost.data.pubDate)}</p>
+    <div>
+        <div class={styles.time}>
+            <i class="fa-solid fa-clock"/>
+            <p class={styles.time}>{timeSince(currPost.data.pubDate)}</p>
+        </div>
+        <h1>{currPost.data.title}</h1>
     </div>
-    <h1>{currPost.data.title}</h1>
-  </div>
-  <MetaInfo pubDate={currPost.data.pubDate} category={currPost.data.category} />
+    <MetaInfo pubDate={currPost.data.pubDate} category={currPost.data.category}/>
 </div>

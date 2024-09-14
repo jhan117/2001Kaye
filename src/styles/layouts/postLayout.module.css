@@ -1,9 +1,9 @@
 .post {
-  background-color: var(--primary-800);
-  border-radius: 1rem;
-  padding: 0 1rem;
+    background-color: var(--primary-800);
+    border-radius: 1rem;
+    padding: 0 1rem;
 }
 
 .content {
-  padding: 1rem 0;
+    padding: 1rem 0;
 }

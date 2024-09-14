@@ -1,6 +1,6 @@
 ---
-import type { GetStaticPaths } from "astro";
-import { getCollection } from "astro:content";
+import type {GetStaticPaths} from "astro";
+import {getCollection} from "astro:content";
 
 import Layout from "@layouts/Layout.astro"
 import PostLayout from "@layouts/PostLayout.astro";
@@ -8,24 +8,24 @@ import PostLayout from "@layouts/PostLayout.astro";
 import sortPostsByPubDate from "@utils/postUtils";
 
 export const getStaticPaths = (async () => {
-  const posts: Post[] = await getCollection("posts");
-  const postsCount = posts.length;
-  return sortPostsByPubDate(posts).map((post, idx) => ({
-    params: { slug: post.slug },
-    props: {
-      post,
-      prevPost: idx + 1 === postsCount ? undefined : posts[idx + 1],
-      nextPost: idx === 0 ? undefined : posts[idx - 1],
-    },
-  }));
+    const posts: Post[] = await getCollection("posts");
+    const postsCount = posts.length;
+    return sortPostsByPubDate(posts).map((post, idx) => ({
+        params: {slug: post.slug},
+        props: {
+            post,
+            prevPost: idx + 1 === postsCount ? undefined : posts[idx + 1],
+            nextPost: idx === 0 ? undefined : posts[idx - 1],
+        },
+    }));
 }) satisfies GetStaticPaths;
 
-const { post, prevPost, nextPost } = Astro.props;
-const { Content } = await post.render();
+const {post, prevPost, nextPost} = Astro.props;
+const {Content} = await post.render();
 ---
 
 <Layout>
-  <PostLayout currPost={post} prevPost={prevPost} nextPost={nextPost}>
-    <Content />
-  </PostLayout>
+    <PostLayout currPost={post} prevPost={prevPost} nextPost={nextPost}>
+        <Content/>
+    </PostLayout>
 </Layout>

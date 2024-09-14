@@ -1,12 +1,12 @@
 /* header height: 64px, 72px, 72px */
 /* header font: 14px, 16px, 16px - 600 */
 .headerWrapper {
-  display: flex;
-  justify-content: center;
-  height: 4rem;
-  width: 100%;
-  font-size: 0.875rem;
-  font-weight: 600;
+    display: flex;
+    justify-content: center;
+    height: 4rem;
+    width: 100%;
+    font-size: 0.875rem;
+    font-weight: 600;
 }
 
 .headerContent,
@@ -14,58 +14,58 @@
 .actions,
 .actions a,
 .navigation a {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .headerContent {
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 1rem;
-  background-color: var(--primary-800);
-  border-radius: 0 0 1rem 1rem;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+    background-color: var(--primary-800);
+    border-radius: 0 0 1rem 1rem;
 }
 
 .headerContent,
 .logoLink {
-  column-gap: 0.5rem;
+    column-gap: 0.5rem;
 }
 
 .logoLink,
 .actions a,
 .navigation a {
-  height: 2.5rem;
+    height: 2.5rem;
 }
 
 .logoLink {
-  padding: 0 0.75rem;
-  color: var(--info-color);
+    padding: 0 0.75rem;
+    color: var(--info-color);
 }
 
 .navigation {
-  display: none;
+    display: none;
 }
 
 .actions {
-  color: var(--gray-300);
+    color: var(--gray-300);
 }
 
 .actions a {
-  justify-content: center;
-  width: 2.5rem;
+    justify-content: center;
+    width: 2.5rem;
 }
 
 .logoLink:hover,
 .actions a:hover,
 .navigation a:hover {
-  background-color: var(--primary-700);
-  border-radius: 0.5rem;
-  color: var(--info-color);
+    background-color: var(--primary-700);
+    border-radius: 0.5rem;
+    color: var(--info-color);
 }
 
 .searchButton p {
-  display: none;
+    display: none;
 }
 
 .themeToggle {
@@ -76,49 +76,49 @@
 
 /* Tablet */
 @media (min-width: 42rem) {
-  .headerWrapper {
-    height: 4.5rem;
-    font-size: 1rem;
-  }
+    .headerWrapper {
+        height: 4.5rem;
+        font-size: 1rem;
+    }
 
-  .headerContent {
-    max-width: 70rem;
-    padding: 0 1rem;
-  }
+    .headerContent {
+        max-width: 70rem;
+        padding: 0 1rem;
+    }
 
-  .navigation {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 25rem;
-  }
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 25rem;
+    }
 
-  .navigation a {
-    padding: 0 0.75rem;
-  }
+    .navigation a {
+        padding: 0 0.75rem;
+    }
 }
 
 /* Desktop 1024px */
 @media (min-width: 64rem) {
-  .searchButton {
-    width: 7.5rem !important;
-    justify-content: flex-start !important;
-    border: 1px solid var(--gray-300);
-    padding: 0 0.75rem;
-    border-radius: 0.5rem;
-    column-gap: 1rem;
+    .searchButton {
+        width: 7.5rem !important;
+        justify-content: flex-start !important;
+        border: 1px solid var(--gray-300);
+        padding: 0 0.75rem;
+        border-radius: 0.5rem;
+        column-gap: 1rem;
 
-    cursor: text;
-  }
+        cursor: text;
+    }
 
-  .searchButton:hover {
-    background-color: hsla(0, 0%, 70%, 20%) !important;
-    color: inherit !important;
-  }
+    .searchButton:hover {
+        background-color: hsla(0, 0%, 70%, 20%) !important;
+        color: inherit !important;
+    }
 
-  .searchButton p {
-    display: block;
-    font-weight: 400;
-  }
+    .searchButton p {
+        display: block;
+        font-weight: 400;
+    }
 }

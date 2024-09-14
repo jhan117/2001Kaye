@@ -1,19 +1,19 @@
 .item {
-  background-color: var(--primary-800);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
+    background-color: var(--primary-800);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
 
-  display: flex;
-  flex-direction: row;
-  column-gap: 0.5rem;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.5rem;
+    align-items: center;
 }
 
 .item:hover {
-  background-color: var(--primary-700);
-  color: var(--info-color);
+    background-color: var(--primary-700);
+    color: var(--info-color);
 }
 
 .rightItem {
-  justify-content: flex-end;
+    justify-content: flex-end;
 }
