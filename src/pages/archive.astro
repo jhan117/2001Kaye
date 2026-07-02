@@ -1,0 +1,248 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import type { Post } from "@types";
+import { sortPostsByPubDate } from "@utils/posts";
+
+const posts = await getCollection("posts");
+// 배포 환경 시 초안(Draft) 자동 필터링
+const sortedPosts = sortPostsByPubDate(posts as Post[]);
+
+const postsByYear = sortedPosts.reduce((acc, post) => {
+    const year = new Date(post.data.pubDate).getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+}, {} as Record<number, Post[]>);
+
+const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
+
+export const prerender = true;
+---
+
+<Layout title="Archive - 2001Kaye">
+    <div class="archive-wrapper">
+        <div class="archive-header">
+            <h1 class="archive-title">Archive</h1>
+            <p class="archive-subtitle">Total <span class="highlight">{sortedPosts.length}</span> posts</p>
+        </div>
+
+        <div class="timeline-container">
+            {years.map(year => (
+                <div class="year-group">
+                    <div class="year-header">
+                        <div class="year-dot"></div>
+                        <h2 class="year-heading">
+                            {year}
+                            <span class="year-count">{postsByYear[year].length} posts</span>
+                        </h2>
+                    </div>
+                    <div class="post-list">
+                        {postsByYear[year].map(post => {
+                            const dateObj = new Date(post.data.pubDate);
+                            const formattedDate = `${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+                            return (
+                                <a href={`/posts/${post.slug}`} class="post-row">
+                                    <div class="post-dot"></div>
+                                    <span class="post-date">{formattedDate}</span>
+                                    <span class="post-title">{post.data.title}</span>
+                                </a>
+                            );
+                        })}
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .archive-wrapper {
+        padding: 2.5rem 2rem;
+        width: 100%;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--card-radius);
+        backdrop-filter: blur(var(--backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--backdrop-blur));
+        box-shadow: var(--shadow-md);
+    }
+
+    .archive-header {
+        margin-bottom: 3rem;
+        padding-left: 1rem;
+    }
+
+    .archive-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.02em;
+    }
+
+    .archive-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        margin: 0;
+    }
+
+    .highlight {
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    .timeline-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .year-group {
+        position: relative;
+    }
+
+    .year-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .year-dot {
+        width: 1rem;
+        height: 1rem;
+        background-color: var(--accent);
+        border-radius: 50%;
+        border: 3px solid var(--bg-color);
+        box-shadow: 0 0 0 2px var(--accent);
+        margin-left: 0.5rem;
+    }
+
+    .year-heading {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+    }
+
+    .year-count {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .post-list {
+        position: relative;
+        padding-left: 3rem;
+        padding-bottom: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    
+    .post-list::before {
+        content: '';
+        position: absolute;
+        top: -1.5rem;
+        bottom: 0;
+        left: 0.95rem; 
+        width: 2px;
+        background-image: linear-gradient(to bottom, var(--card-border) 50%, transparent 50%);
+        background-size: 2px 8px;
+        z-index: 1;
+    }
+
+    
+    .year-group:last-child .post-list {
+        padding-bottom: 0;
+    }
+    
+    .year-group:last-child .post-list::before {
+        bottom: 1rem; 
+    }
+
+    .post-row {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        text-decoration: none;
+        padding: 0.75rem 1rem;
+        border-radius: var(--btn-radius);
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .post-dot {
+        position: absolute;
+        left: -2.3rem; 
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: var(--card-border);
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        z-index: 2;
+    }
+
+    .post-row:hover {
+        background-color: var(--primary-700);
+        transform: translateX(4px);
+    }
+
+    .post-row:hover .post-dot {
+        background-color: var(--accent);
+        transform: scale(1.5);
+    }
+
+    .post-date {
+        color: var(--text-muted);
+        font-family: "Outfit", sans-serif;
+        font-size: 1.05rem;
+        min-width: 3.5rem;
+        transition: color 0.2s ease;
+    }
+
+    .post-row:hover .post-date {
+        color: var(--accent);
+    }
+
+    .post-title {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: color 0.2s ease;
+        line-height: 1.4;
+    }
+
+    .post-row:hover .post-title {
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 42rem) {
+        .archive-wrapper {
+            padding: 2rem 1.5rem;
+        }
+
+        .post-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding-left: 0;
+        }
+
+        .post-row:hover {
+            background-color: transparent;
+        }
+
+        .post-dot {
+            left: -2.3rem;
+            top: 1rem;
+        }
+    }
+</style>

@@ -1,0 +1,85 @@
+---
+import type {GetStaticPaths} from "astro";
+import {getCollection} from "astro:content";
+
+import Layout from "@layouts/Layout.astro";
+import PostList from "@components/post/PostList.astro";
+import Pagination from "@components/ui/Pagination.astro";
+import Icon from "@components/ui/Icon.astro";
+import type { Post } from "@types";
+import { sortPostsByPubDate, getTags } from "@utils/posts";
+
+export const getStaticPaths = (async ({paginate}) => {
+    const posts = await getCollection("posts");
+    const tags = getTags(posts as Post[]).map(t => t.name);
+    
+    return tags.flatMap((tag) => {
+        const filteredPosts = (posts as Post[]).filter(post => post.data.tags?.includes(tag));
+        const sortedPosts = sortPostsByPubDate(filteredPosts);
+        return paginate(sortedPosts, {
+            params: { tag },
+            pageSize: 5
+        });
+    });
+}) satisfies GetStaticPaths;
+
+const {page} = Astro.props;
+const {tag} = Astro.params;
+
+export const prerender = true;
+---
+
+<Layout title={`#${tag} - 2001Kaye`}>
+    <div class="category-header">
+        <Icon name="folder" class="category-icon" />
+        <h2 class="category-title">
+            <span class="category-highlight">#{tag}</span> 태그 글
+        </h2>
+        <span class="count-badge">{page?.total} posts</span>
+    </div>
+    
+    <PostList data={page?.data as Post[]}/>
+    <Pagination page={page}/>
+</Layout>
+
+<style>
+    .category-header {
+        margin-bottom: 2rem;
+        padding: 1.25rem 1.5rem;
+        background: var(--card-bg);
+        border-radius: var(--card-radius);
+        border: 1px solid var(--card-border);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .category-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--accent);
+    }
+
+    .category-title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .category-highlight {
+        color: var(--accent);
+        font-weight: 700;
+    }
+
+    .count-badge {
+        margin-left: auto;
+        background-color: var(--primary-700);
+        padding: 0.3rem 0.8rem;
+        border-radius: 2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--accent);
+        border: 1px solid var(--card-border);
+    }
+</style>

@@ -6,6 +6,15 @@
       "@public/*": [
         "public/*"
       ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@types": [
+        "src/types/index.ts"
+      ],
       "@components/*": [
         "src/components/*"
       ],
@@ -17,12 +26,6 @@
       ],
       "@styles/*": [
         "src/styles/*"
-      ],
-      "@styles-components/*": [
-        "src/styles/components/*"
-      ],
-      "@styles-layouts/*": [
-        "src/styles/layouts/*"
       ],
       "@utils/*": [
         "src/utils/*"

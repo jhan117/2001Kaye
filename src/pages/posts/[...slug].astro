@@ -1,33 +1,46 @@
 ---
-import type {GetStaticPaths} from "astro";
-import {getCollection} from "astro:content";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
 
-import Layout from "@layouts/Layout.astro"
+import Layout from "@layouts/Layout.astro";
 import PostLayout from "@layouts/PostLayout.astro";
+import type { Post } from "@types";
 
-import sortPostsByPubDate from "@utils/postUtils";
+import { sortPostsByPubDate, calculateReadingTime } from "@utils/posts";
 
 export const getStaticPaths = (async () => {
-    const posts: Post[] = await getCollection("posts");
-    const postsCount = posts.length;
-    return sortPostsByPubDate(posts).map((post, idx) => ({
-        params: {slug: post.slug},
+    const posts = await getCollection("posts");
+    const sortedPosts = sortPostsByPubDate(posts as Post[]);
+    const postsCount = sortedPosts.length;
+    return sortedPosts.map((post, idx) => ({
+        params: { slug: post.slug },
         props: {
             post,
-            prevPost: idx + 1 === postsCount ? undefined : posts[idx + 1],
-            nextPost: idx === 0 ? undefined : posts[idx - 1],
+            prevPost: idx + 1 === postsCount ? undefined : sortedPosts[idx + 1],
+            nextPost: idx === 0 ? undefined : sortedPosts[idx - 1],
         },
     }));
 }) satisfies GetStaticPaths;
 
-const {post, prevPost, nextPost} = Astro.props;
-const {Content} = await post.render();
+const { post, prevPost, nextPost } = Astro.props;
+const { Content, headings } = await post.render();
+const readingTime = calculateReadingTime(post.body || "");
 
 export const prerender = true;
 ---
 
-<Layout>
-    <PostLayout currPost={post} prevPost={prevPost} nextPost={nextPost}>
-        <Content/>
+<Layout
+    title={`${post.data.title} - 2001Kaye`}
+    description={post.data.description}
+    image={post.data.image}
+>
+    <PostLayout
+        currPost={post}
+        prevPost={prevPost}
+        nextPost={nextPost}
+        headings={headings}
+        readingTime={readingTime}
+    >
+        <Content />
     </PostLayout>
 </Layout>

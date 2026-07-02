@@ -1,0 +1,483 @@
+---
+import Icon from "@components/ui/Icon.astro";
+import { getCollection } from "astro:content";
+import type { Post } from "@types";
+import { getCategories } from "@utils/posts";
+import { SITE, SOCIALS } from "@src/config";
+
+const posts = await getCollection("posts");
+const categories = getCategories(posts as Post[]);
+---
+
+<header class="header-wrapper">
+    <div class="header-content">
+        <a href="/" class="logo-link">
+            <Icon name="house" class="icon" />
+            <p>2001Kaye</p>
+        </a>
+        <nav class="navigation">
+            <a href="/">Home</a>
+            <a href="/archive">Archive</a>
+            <a href="/about">About</a>
+        </nav>
+        <div class="actions">
+            <button id="searchTrigger" class="search-button" aria-label="Search">
+                <Icon name="search" class="header-icon" />
+                <p>Search</p>
+            </button>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                <Icon id="moonIcon" name="moon" class="header-icon" />
+                <Icon id="sunIcon" name="sun" class="header-icon" style="display: none;" />
+            </button>
+            <button id="mobileMenuBtn" class="menu-button" aria-label="Menu">
+                <Icon name="menu" class="header-icon" />
+            </button>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation Dropdown -->
+    <div id="mobileNav" class="mobile-nav">
+        <div class="mobile-nav-section">
+            <h4 class="menu-title">Navigation</h4>
+            <nav class="mobile-menu-links">
+                <a href="/">Home</a>
+                <a href="/archive">Archive</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+
+        <div class="mobile-divider"></div>
+
+        <!-- Mini Profile Section -->
+        <div class="mobile-nav-section mobile-profile">
+            <div class="mobile-profile-header">
+                <img src={SITE.profileImg} alt={SITE.author} class="mobile-avatar" />
+                <div>
+                    <h4 class="mobile-profile-name">{SITE.author}</h4>
+                    <p class="mobile-profile-bio">{SITE.bio}</p>
+                </div>
+            </div>
+            <div class="mobile-socials">
+                {SOCIALS.map((social: any) => (
+                    <a href={social.url} target={social.name === 'mail' || social.name === 'rss' ? '_self' : '_blank'} aria-label={social.label} class="mobile-social-btn">
+                        <Icon name={social.name as any} />
+                    </a>
+                ))}
+            </div>
+        </div>
+
+        <div class="mobile-divider"></div>
+
+        <!-- Categories Section -->
+        <div class="mobile-nav-section">
+            <h4 class="menu-title">Categories</h4>
+            <div class="mobile-categories">
+                {categories.map((cat) => (
+                    <a href={`/category/${cat.name}`} class="mobile-category-item">
+                        <span class="mobile-category-name">{cat.name}</span>
+                        <span class="mobile-category-count">{cat.count}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    .header-wrapper {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        max-width: 75rem;
+        margin: 1.25rem auto 0;
+        padding: 0 1rem;
+        z-index: 100;
+        position: relative;
+    }
+
+    .header-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 4rem;
+        padding: 0 1.25rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--card-radius);
+        backdrop-filter: blur(var(--backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--backdrop-blur));
+        box-shadow: var(--shadow-md);
+        transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+    }
+
+    .header-content:hover {
+        border-color: var(--card-border-hover);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .logo-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 0.5rem;
+        height: 2.5rem;
+        padding: 0 1rem;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--accent);
+        border-radius: var(--btn-radius);
+    }
+
+    .logo-link:hover {
+        background-color: var(--primary-700);
+        color: var(--accent-hover);
+        transform: scale(1.03);
+    }
+
+    .logo-link :global(.icon) {
+        width: 1.35rem;
+        height: 1.35rem;
+    }
+
+    .navigation {
+        display: none;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 0.75rem;
+    }
+
+    .navigation a {
+        display: flex;
+        align-items: center;
+        height: 2.5rem;
+        padding: 0 1rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        border-radius: var(--btn-radius);
+    }
+
+    .navigation a:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 0.5rem;
+        color: var(--text-secondary);
+    }
+
+    .actions a,
+    .actions button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: var(--btn-radius);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: inherit;
+        transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .actions a:hover,
+    .actions button:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+        transform: scale(1.05);
+    }
+
+    .search-button p {
+        display: none;
+    }
+
+    :global(.header-icon) {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    /* 태블릿 뷰 */
+    @media (min-width: 42rem) {
+        .navigation {
+            display: flex;
+        }
+        
+        .menu-button {
+            display: none !important;
+        }
+    }
+
+    /* 데스크톱 뷰 */
+    @media (min-width: 64rem) {
+        .search-button {
+            width: 7rem !important;
+            justify-content: flex-start !important;
+            padding: 0 1rem;
+            column-gap: 0.5rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .search-button:hover {
+            border-color: var(--accent);
+            background-color: var(--primary-700) !important;
+        }
+
+        .search-button p {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+    }
+
+    .mobile-nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 4.5rem;
+        left: 1rem;
+        right: 1rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: var(--card-radius);
+        padding: 1.25rem;
+        backdrop-filter: blur(var(--backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--backdrop-blur));
+        box-shadow: var(--shadow-lg);
+        gap: 1rem;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .mobile-nav.active {
+        display: flex;
+    }
+
+    .mobile-nav-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .menu-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .mobile-menu-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .mobile-menu-links a {
+        display: flex;
+        align-items: center;
+        padding: 0.6rem 0.75rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        border-radius: var(--btn-radius);
+        text-decoration: none;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .mobile-menu-links a:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+    }
+
+    .mobile-divider {
+        height: 1px;
+        background-color: var(--card-border);
+        width: 100%;
+        margin: 0.25rem 0;
+    }
+
+    /* 모바일 프로필 스타일 */
+    .mobile-profile-header {
+        display: flex;
+        align-items: center;
+        column-gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        padding: 0 0.5rem;
+    }
+
+    .mobile-avatar {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        border: 2px solid var(--card-border);
+        object-fit: cover;
+    }
+
+    .mobile-profile-name {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .mobile-profile-bio {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        line-height: 1.4;
+    }
+
+    .mobile-socials {
+        display: flex;
+        column-gap: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .mobile-social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--btn-radius);
+        background-color: var(--primary-700);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .mobile-social-btn :global(.lucide-svg) {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .mobile-social-btn:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    /* 모바일 카테고리 스타일 */
+    .mobile-categories {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .mobile-category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0.75rem;
+        border-radius: var(--btn-radius);
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .mobile-category-item:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+    }
+
+    .mobile-category-count {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.4rem;
+        border-radius: 9999px;
+        background-color: var(--primary-700);
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+    }
+
+    .mobile-category-item:hover .mobile-category-count {
+        border-color: var(--accent);
+        color: var(--accent);
+        background-color: rgba(0, 150, 255, 0.1);
+    }
+</style>
+
+<script>
+    const setupHeader = () => {
+        const themeToggle = document.getElementById('themeToggle');
+
+        if (themeToggle) {
+            // 이벤트 중복 등록 방지를 위한 노드 복제
+            themeToggle.replaceWith(themeToggle.cloneNode(true));
+            const newThemeToggle = document.getElementById('themeToggle');
+            const newMoonIcon = document.getElementById('moonIcon');
+            const newSunIcon = document.getElementById('sunIcon');
+
+            const updateIcon = (theme: string) => {
+                if (theme === 'light') {
+                    if (newMoonIcon) newMoonIcon.style.display = 'block';
+                    if (newSunIcon) newSunIcon.style.display = 'none';
+                } else {
+                    if (newMoonIcon) newMoonIcon.style.display = 'none';
+                    if (newSunIcon) newSunIcon.style.display = 'block';
+                }
+            };
+
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            updateIcon(currentTheme);
+
+            newThemeToggle?.addEventListener('click', () => {
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                if (isLight) {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.setItem('theme', 'dark');
+                    updateIcon('dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    updateIcon('light');
+                }
+            });
+        }
+
+        // 모바일 메뉴 토글
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+
+        if (mobileMenuBtn && mobileNav) {
+            // 페이지 전환 시 모바일 메뉴 초기화
+            mobileNav.classList.remove('active');
+
+            mobileMenuBtn.replaceWith(mobileMenuBtn.cloneNode(true));
+            const newMobileMenuBtn = document.getElementById('mobileMenuBtn');
+
+            newMobileMenuBtn?.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+            });
+
+            // 메뉴 항목 클릭 시 모바일 메뉴 닫기
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                });
+            });
+
+            // 전역 클릭 이벤트 중복 등록 방지
+            if (!(window as any).__mobileMenuListenerAdded) {
+                document.addEventListener('click', (event: MouseEvent) => {
+                    const currentMobileNav = document.getElementById('mobileNav');
+                    const currentMenuBtn = document.getElementById('mobileMenuBtn');
+                    if (currentMobileNav && currentMenuBtn) {
+                        if (!currentMobileNav.contains(event.target as Node) && !currentMenuBtn.contains(event.target as Node)) {
+                            currentMobileNav.classList.remove('active');
+                        }
+                    }
+                });
+                (window as any).__mobileMenuListenerAdded = true;
+            }
+        }
+    };
+
+    document.addEventListener('astro:page-load', setupHeader);
+</script>

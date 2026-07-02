@@ -1,0 +1,165 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<div class="scroll-buttons-container">
+    <button id="back-to-top" class="glass-card scroll-btn" aria-label="위로 가기" title="위로 가기">
+        <Icon name="chevron-up" class="scroll-icon" />
+    </button>
+    <button id="scroll-to-bottom" class="glass-card scroll-btn" aria-label="아래로 가기" title="아래로 가기">
+        <Icon name="chevron-down" class="scroll-icon" />
+    </button>
+</div>
+
+<style>
+    .scroll-buttons-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 99;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .scroll-btn {
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        box-shadow: var(--shadow-md);
+        transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-normal);
+    }
+
+    .scroll-btn:hover {
+        border-color: var(--card-border-hover);
+        color: var(--accent);
+        box-shadow: var(--shadow-hover);
+    }
+
+    #back-to-top:hover {
+        transform: translateY(-4px);
+    }
+
+    #scroll-to-bottom:hover {
+        transform: translateY(4px);
+    }
+
+    .scroll-btn:active {
+        transform: translateY(0);
+    }
+
+    .scroll-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        transition: transform var(--transition-fast);
+    }
+
+    #back-to-top:hover .scroll-icon {
+        transform: translateY(-2px);
+    }
+
+    #scroll-to-bottom:hover .scroll-icon {
+        transform: translateY(2px);
+    }
+
+    /* 모바일 반응형 설정 */
+    @media (max-width: 48rem) {
+        .scroll-buttons-container {
+            bottom: 1.5rem;
+            right: 1.5rem;
+        }
+        
+        .scroll-btn {
+            width: 2.75rem;
+            height: 2.75rem;
+        }
+        
+        .scroll-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    }
+</style>
+
+<script>
+    // 전역 스크롤 이벤트 중복 등록 방지
+    if (!(window as any).__scrollBtnsListenerAdded) {
+        window.addEventListener('scroll', () => {
+            const topBtn = document.getElementById('back-to-top');
+            const bottomBtn = document.getElementById('scroll-to-bottom');
+            
+            if (topBtn) {
+                if (window.scrollY > 300) {
+                    topBtn.style.opacity = '1';
+                    topBtn.style.pointerEvents = 'auto';
+                } else {
+                    topBtn.style.opacity = '0';
+                    topBtn.style.pointerEvents = 'none';
+                }
+            }
+            
+            if (bottomBtn) {
+                // 페이지 최하단 도달 시 하단 이동 버튼 숨김
+                const atBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
+                if (atBottom) {
+                    bottomBtn.style.opacity = '0';
+                    bottomBtn.style.pointerEvents = 'none';
+                } else {
+                    bottomBtn.style.opacity = '1';
+                    bottomBtn.style.pointerEvents = 'auto';
+                }
+            }
+        });
+        (window as any).__scrollBtnsListenerAdded = true;
+    }
+
+    const setupScrollButtons = () => {
+        const topBtn = document.getElementById('back-to-top');
+        const bottomBtn = document.getElementById('scroll-to-bottom');
+        
+        let newTopBtn = topBtn;
+        if (topBtn) {
+            topBtn.replaceWith(topBtn.cloneNode(true));
+            newTopBtn = document.getElementById('back-to-top');
+            newTopBtn?.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        let newBottomBtn = bottomBtn;
+        if (bottomBtn) {
+            bottomBtn.replaceWith(bottomBtn.cloneNode(true));
+            newBottomBtn = document.getElementById('scroll-to-bottom');
+            newBottomBtn?.addEventListener('click', () => {
+                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+            });
+        }
+        
+        // 초기 렌더링 시 스크롤 위치에 따른 가시성 설정
+        if (newTopBtn) {
+            if (window.scrollY > 300) {
+                newTopBtn.style.opacity = '1';
+                newTopBtn.style.pointerEvents = 'auto';
+            } else {
+                newTopBtn.style.opacity = '0';
+                newTopBtn.style.pointerEvents = 'none';
+            }
+        }
+        
+        if (newBottomBtn) {
+            const atBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
+            newBottomBtn.style.opacity = atBottom ? '0' : '1';
+            newBottomBtn.style.pointerEvents = atBottom ? 'none' : 'auto';
+        }
+    };
+
+    document.addEventListener('astro:page-load', setupScrollButtons);
+</script>

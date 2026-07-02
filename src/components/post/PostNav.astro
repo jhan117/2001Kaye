@@ -1,0 +1,42 @@
+---
+import PostNavItem from "./PostNavItem.astro";
+import type { Post } from "@types";
+
+interface Props {
+    prevPost?: Post;
+    nextPost?: Post;
+}
+
+const { prevPost, nextPost } = Astro.props;
+const hasBoth = prevPost && nextPost;
+---
+
+<nav class={`post-navigation ${hasBoth ? 'has-both' : 'has-one'}`}>
+    {prevPost && (
+        <PostNavItem post={prevPost} direction="prev" />
+    )}
+    {nextPost && (
+        <PostNavItem post={nextPost} direction="next" />
+    )}
+</nav>
+
+<style>
+    .post-navigation {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        width: 100%;
+        margin-top: 1.5rem;
+    }
+
+    @media (min-width: 56rem) {
+        .post-navigation.has-both {
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .post-navigation.has-one {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

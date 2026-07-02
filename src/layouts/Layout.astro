@@ -1,8 +1,26 @@
 ---
-import Header from "@components/Header.astro"
-import Footer from "@components/Footer.astro"
+import Header from "@components/layout/Header.astro"
+import Footer from "@components/layout/Footer.astro"
+import Sidebar from "@components/layout/Sidebar.astro"
+import Banner from "@components/layout/Banner.astro"
+import SearchModal from "@components/ui/SearchModal.astro"
+import BackToTop from "@components/ui/BackToTop.astro"
+import { SITE } from "@src/config"
+import { ViewTransitions } from 'astro:transitions';
 
 import "@styles/global.css"
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+}
+
+const { 
+    title = SITE.title, 
+    description = SITE.description, 
+    image = SITE.bannerImg 
+} = Astro.props;
 ---
 
 <html lang="ko">
@@ -11,16 +29,113 @@ import "@styles/global.css"
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
     <meta name="viewport" content="width=device-width"/>
     <meta name="generator" content={Astro.generator}/>
-    <title>2001Kaye</title>
+    <title>{title}</title>
+    <ViewTransitions />
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <script is:inline>
+        const getTheme = () => {
+            if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+                return localStorage.getItem('theme');
+            }
+            if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+                return 'light';
+            }
+            return 'dark';
+        };
+        
+        const setTheme = () => {
+            const theme = getTheme();
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+            window.localStorage.setItem('theme', theme);
+        };
+
+        setTheme();
+        document.addEventListener('astro:after-swap', setTheme);
+    </script>
 </head>
 <body>
 <Header/>
-<slot/>
+
+<Banner image={image} />
+
+<div class="layout-container">
+    <div class="content-grid">
+        <Sidebar />
+        <main class="main-content">
+            <slot/>
+        </main>
+    </div>
+</div>
+
 <Footer/>
+<SearchModal />
+<BackToTop />
 </body>
 </html>
 
-<script
-        src="https://kit.fontawesome.com/a015511c01.js"
-        crossorigin="anonymous"
-/>
+<style>
+    .layout-container {
+        width: 100%;
+        max-width: 75rem;
+        margin: 0 auto 2rem auto; 
+        padding: 0 1rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 10; 
+    }
+
+    @media (min-width: 80rem) {
+        .layout-container {
+            max-width: 85rem; 
+        }
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        width: 100%;
+    }
+
+    .main-content {
+        min-width: 0; 
+    }
+
+    /* 태블릿 뷰 */
+    @media (min-width: 48rem) {
+        .content-grid {
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+        }
+    }
+
+    /* 데스크톱 뷰 */
+    @media (min-width: 64rem) {
+        .content-grid {
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+    }
+</style>

@@ -1,0 +1,100 @@
+---
+import type { Page } from 'astro';
+import Icon from "@components/ui/Icon.astro";
+
+interface Props {
+    page: Page;
+}
+
+const { page } = Astro.props;
+
+const hasPrev = !!page.url.prev;
+const hasNext = !!page.url.next;
+---
+
+<div class="pagination-container">
+    <nav class="pagination-nav">
+        {hasPrev ? (
+            <a href={page.url.prev} class="glass-card page-btn" aria-label="Previous Page">
+                <Icon name="chevron-left" class="icon" />
+            </a>
+        ) : (
+            <span class="glass-card page-btn disabled" aria-label="No Previous Page">
+                <Icon name="chevron-left" class="icon" />
+            </span>
+        )}
+        
+        <span class="current-page">{page.currentPage}</span>
+        
+        {hasNext ? (
+            <a href={page.url.next} class="glass-card page-btn" aria-label="Next Page">
+                <Icon name="chevron-right" class="icon" />
+            </a>
+        ) : (
+            <span class="glass-card page-btn disabled" aria-label="No Next Page">
+                <Icon name="chevron-right" class="icon" />
+            </span>
+        )}
+    </nav>
+</div>
+
+<style>
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .pagination-nav {
+        display: flex;
+        align-items: center;
+        column-gap: 1.25rem;
+    }
+
+    .page-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--card-border);
+        transition: transform var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+    }
+
+    a.page-btn:hover {
+        transform: scale(1.05);
+        color: var(--accent);
+        border-color: var(--accent);
+        background-color: var(--primary-700);
+        box-shadow: var(--shadow-md);
+    }
+
+    .page-btn.disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .current-page {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--accent);
+        min-width: 1.5rem;
+        text-align: center;
+        background-color: rgba(0, 150, 255, 0.1);
+        border: 1px solid rgba(0, 150, 255, 0.2);
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--btn-radius);
+    }
+
+    :global(.lucide-svg.icon) {
+        width: 1.15rem;
+        height: 1.15rem;
+    }
+</style>

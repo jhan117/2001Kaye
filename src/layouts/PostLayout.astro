@@ -1,24 +1,377 @@
 ---
-import PostNav from "@components/PostNav.astro";
-import PostHeader from "@components/PostHeader.astro";
-
-import styles from "@styles-layouts/postLayout.module.css";
+import PostNav from "@components/post/PostNav.astro";
+import PostHeader from "@components/post/PostHeader.astro";
+import TableOfContents from "@components/post/TableOfContents.astro";
+import type { Post } from "@types";
 
 interface Props {
     currPost: Post;
     prevPost?: Post;
     nextPost?: Post;
+    headings?: any[];
+    readingTime?: string;
 }
 
-const {currPost, prevPost, nextPost} = Astro.props;
+const { currPost, prevPost, nextPost, headings = [], readingTime } = Astro.props;
 ---
 
-<main>
-    <div class={styles.post}>
-        <PostHeader currPost={currPost}/>
-        <div class={styles.content}>
-            <slot/>
+<div class="post-layout-wrapper">
+    <div class="post-content-container">
+        <div class="post-main-column">
+            <article id="post-start" class="glass-card post-article">
+                <PostHeader currPost={currPost} readingTime={readingTime} />
+                
+                <!-- Mobile TOC can be injected here or handled inside TableOfContents component -->
+                <div class="mobile-toc-wrapper">
+                    <TableOfContents headings={headings} isMobile={true} />
+                </div>
+
+                <div class="markdown-content">
+                    <slot />
+                </div>
+            </article>
+
+            <!-- Post Navigation -->
+            <PostNav prevPost={prevPost} nextPost={nextPost} />
+
+            <!-- Giscus Comments in a separate card -->
+            <div class="glass-card giscus-card">
+                <h3 class="comments-title">댓글</h3>
+                <div class="giscus-wrapper">
+                    <div id="giscus-container"></div>
+                </div>
+            </div>
         </div>
+        
+        <!-- Desktop TOC -->
+        <TableOfContents headings={headings} isMobile={false} />
     </div>
-    <PostNav prevPost={prevPost} nextPost={nextPost}/>
-</main>
+</div>
+
+<style>
+    .post-layout-wrapper {
+        width: 100%;
+    }
+
+    .post-main-column {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2rem;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .post-content-container {
+        position: relative;
+        width: 100%;
+    }
+
+    @media (min-width: 80rem) {
+        .post-content-container {
+            display: grid;
+            grid-template-columns: 1fr 220px; 
+            column-gap: 2rem;
+            align-items: start;
+        }
+    }
+
+
+
+    .post-article {
+        padding: 2.5rem 2rem;
+    }
+
+    
+    .markdown-content {
+        margin-top: 2rem;
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    
+    .markdown-content :global(p) {
+        margin-bottom: 1.25rem;
+    }
+
+    .markdown-content :global(h2) {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        border-left: 4px solid var(--accent);
+        padding-left: 0.75rem;
+    }
+
+    .markdown-content :global(h3) {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+    }
+
+    .markdown-content :global(ul), .markdown-content :global(ol) {
+        margin-bottom: 1.25rem;
+        padding-left: 1.5rem;
+    }
+
+    .markdown-content :global(ul li) {
+        list-style-type: disc;
+        margin-bottom: 0.5rem;
+    }
+
+    .markdown-content :global(ol li) {
+        list-style-type: decimal;
+        margin-bottom: 0.5rem;
+    }
+
+    .markdown-content :global(code) {
+        font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        background-color: var(--primary-700);
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        color: var(--accent);
+        border: 1px solid var(--card-border);
+    }
+
+    .markdown-content :global(pre) {
+        
+        border: 1px solid var(--card-border);
+        border-radius: var(--btn-radius);
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        overflow-x: auto;
+    }
+
+    .markdown-content :global(table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .markdown-content :global(th), .markdown-content :global(td) {
+        border: 1px solid var(--card-border);
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    .markdown-content :global(th) {
+        background-color: var(--primary-700);
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .markdown-content :global(tr:nth-child(even)) {
+        background-color: rgba(150, 150, 150, 0.05);
+    }
+
+    
+    :global(html:not([data-theme="light"])) :global(.astro-code) {
+        background-color: var(--shiki-dark-bg) !important;
+        color: var(--shiki-dark) !important;
+    }
+
+    :global(html:not([data-theme="light"])) :global(.astro-code span) {
+        color: var(--shiki-dark) !important;
+        font-style: var(--shiki-dark-font-style) !important;
+        font-weight: var(--shiki-dark-font-weight) !important;
+        text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+
+    .markdown-content :global(pre code) {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        color: inherit;
+        font-size: 0.95rem;
+    }
+
+    .markdown-content :global(blockquote) {
+        border-left: 4px solid var(--accent);
+        background-color: rgba(0, 150, 255, 0.05);
+        padding: 1rem 1.25rem;
+        margin: 1.5rem 0;
+        border-radius: 0 var(--btn-radius) var(--btn-radius) 0;
+    }
+
+    .markdown-content :global(blockquote p) {
+        margin-bottom: 0;
+        font-style: italic;
+    }
+
+    /* 모바일 목차 래퍼 */
+    .mobile-toc-wrapper {
+        display: block;
+        margin-top: 1.5rem;
+    }
+
+    @media (min-width: 80rem) {
+        .mobile-toc-wrapper {
+            display: none;
+        }
+    }
+
+    /* Giscus 카드 */
+    .giscus-card {
+        padding: 2rem;
+    }
+
+    .comments-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+    }
+    
+    .comments-title::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 1.25rem;
+        background-color: var(--accent);
+        margin-right: 0.5rem;
+        border-radius: 2px;
+    }
+
+    .giscus-wrapper {
+        width: 100%;
+    }
+
+    /* 코드 복사 버튼 */
+    .markdown-content :global(.copy-code-btn) {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+    }
+
+    .markdown-content :global(pre:hover .copy-code-btn) {
+        opacity: 1;
+    }
+
+    .markdown-content :global(.copy-code-btn:hover) {
+        background: var(--primary-600);
+        color: var(--text-primary);
+    }
+
+    .markdown-content :global(pre) {
+        position: relative;
+    }
+</style>
+
+<script>
+    // 코드 복사 버튼 생성
+    const setupCopyButtons = () => {
+        document.querySelectorAll('pre').forEach((block) => {
+            // 이벤트 중복 등록 방지
+            if (block.querySelector('.copy-code-btn')) return;
+
+            const button = document.createElement('button');
+            button.className = 'copy-code-btn';
+            button.innerText = 'Copy';
+
+            button.addEventListener('click', () => {
+                const code = block.querySelector('code');
+                if (code) {
+                    navigator.clipboard.writeText(code.innerText).then(() => {
+                        button.innerText = 'Copied!';
+                        setTimeout(() => {
+                            button.innerText = 'Copy';
+                        }, 2000);
+                    });
+                }
+            });
+
+            block.appendChild(button);
+        });
+    };
+
+    // 초기화 스크립트
+    const initPostPage = () => {
+        setupCopyButtons();
+
+        // 1. 배너를 건너뛰고 본문 시작점으로 부드럽게 자동 스크롤
+        const postStart = document.getElementById('post-start');
+        // 해시 링크나 스크롤 복원이 없는 경우 배너 스킵
+        if (postStart && window.scrollY < 50 && !window.location.hash) {
+            // 레이아웃이 자리잡은 후 부드럽게 스크롤
+            setTimeout(() => {
+                const headerOffset = 80;
+                const elementPosition = postStart.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+
+        // 2. Giscus 로드 및 테마 설정
+        const container = document.getElementById('giscus-container');
+        if (!container) return;
+
+        // 기존 iframe 제거 (페이지 전환 시 중복 로드 방지)
+        container.innerHTML = '';
+
+        const script = document.createElement('script');
+        script.src = "https://giscus.app/client.js";
+        script.setAttribute("data-repo", "jhan117/2001Kaye");
+        script.setAttribute("data-repo-id", "R_kgDOMmR1OA");
+        script.setAttribute("data-category", "Comments");
+        script.setAttribute("data-category-id", "DIC_kwDOMmR1OM4Ch9wH");
+        script.setAttribute("data-mapping", "pathname");
+        script.setAttribute("data-strict", "0");
+        script.setAttribute("data-reactions-enabled", "1");
+        script.setAttribute("data-emit-metadata", "0");
+        script.setAttribute("data-input-position", "top");
+        
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        script.setAttribute("data-theme", isLight ? "light" : "transparent_dark");
+        
+        script.setAttribute("data-lang", "ko");
+        script.setAttribute("data-loading", "lazy");
+        script.crossOrigin = "anonymous";
+        script.async = true;
+        
+        container.appendChild(script);
+
+        // 테마 변경 감지 옵저버 (전역 1회만 등록)
+        if (!(window as any).__giscusThemeObserver) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'data-theme') {
+                        const isLightNow = document.documentElement.getAttribute('data-theme') === 'light';
+                        const newTheme = isLightNow ? 'light' : 'transparent_dark';
+                        const iframe = document.querySelector('iframe.giscus-frame');
+                        if (iframe) {
+                            (iframe as HTMLIFrameElement).contentWindow?.postMessage(
+                                { giscus: { setConfig: { theme: newTheme } } },
+                                'https://giscus.app'
+                            );
+                        }
+                    }
+                });
+            });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+            (window as any).__giscusObserverAdded = true;
+        }
+    };
+
+    document.addEventListener('astro:page-load', initPostPage);
+</script>

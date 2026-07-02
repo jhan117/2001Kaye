@@ -1,0 +1,61 @@
+---
+import { SITE } from "@src/config";
+---
+
+<footer class="footer">
+    <div class="footer-content">
+        <p class="copyright">
+            &copy; {new Date().getFullYear()} <strong>{SITE.author}</strong>. All Rights Reserved.
+        </p>
+        <p class="attribution">
+            Design inspired by <a href="https://github.com/saicaca/fuwari" target="_blank" rel="noopener noreferrer" class="link">Fuwari</a>
+        </p>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        width: 100%;
+        max-width: 75rem;
+        margin: 2rem auto 0 auto;
+        padding: 2rem 1rem;
+        border-top: 1px solid var(--card-border);
+        display: flex;
+        justify-content: center;
+    }
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 0.5rem;
+        text-align: center;
+    }
+
+    .copyright {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .copyright strong {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    .attribution {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    .link {
+        color: var(--text-secondary);
+        font-weight: 500;
+        border-bottom: 1px dashed var(--text-muted);
+        transition: color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .link:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+</style>

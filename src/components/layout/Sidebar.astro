@@ -1,0 +1,311 @@
+---
+import Icon from "@components/ui/Icon.astro";
+import { getCollection } from "astro:content";
+import type { Post } from "@types";
+import { getCategories, getTags } from "@utils/posts";
+import { SITE, SOCIALS } from "@src/config";
+
+const posts = await getCollection("posts");
+const categories = getCategories(posts as Post[]);
+const tags = getTags(posts as Post[]);
+---
+
+<aside class="sidebar">
+    <!-- Profile Card -->
+    <div class="glass-card profile-card">
+        <div class="avatar-container">
+            <div class="avatar-box">
+                <img 
+                    src={SITE.profileImg} 
+                    alt={`${SITE.author} Profile`} 
+                    class="avatar-img" 
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <div class="avatar-fallback">
+                    <Icon name="code" class="icon-code" />
+                </div>
+            </div>
+        </div>
+        <div class="profile-info">
+            <h2 class="profile-name">{SITE.author}</h2>
+            <p class="profile-bio">{SITE.bio}</p>
+            <div class="social-links">
+                {SOCIALS.map((social: any) => (
+                    <a href={social.url} target={social.name === 'mail' || social.name === 'rss' ? '_self' : '_blank'} aria-label={social.label} class="social-btn">
+                        <Icon name={social.name as any} />
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Card -->
+    <div class="glass-card categories-card">
+        <div class="card-header">
+            <Icon name="layers" class="icon" />
+            <h3>Categories</h3>
+        </div>
+        <ul class="category-list">
+            {categories.map((cat) => (
+                <li>
+                    <a href={`/category/${cat.name}`} class="category-item">
+                        <span class="category-name">{cat.name}</span>
+                        <span class="category-count">{cat.count}</span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <!-- Tags Card -->
+    <div class="glass-card tags-card">
+        <div class="card-header">
+            <Icon name="folder" class="icon" />
+            <h3>Tags</h3>
+        </div>
+        <div class="tags-cloud">
+            {tags.map((tag) => (
+                <a href={`/tags/${tag.name}`} class="tag-badge">
+                    <span class="tag-name">#{tag.name}</span>
+                    <span class="tag-count">{tag.count}</span>
+                </a>
+            ))}
+        </div>
+    </div>
+</aside>
+
+<style>
+    .sidebar {
+        display: none; 
+        flex-direction: column;
+        row-gap: 1.25rem;
+        width: 100%;
+    }
+
+    @media (min-width: 48rem) {
+        .sidebar {
+            display: flex; 
+        }
+    }
+
+    .profile-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .avatar-container {
+        position: relative;
+        width: 100%;
+        padding: 1.5rem 1.5rem 0 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    
+    .avatar-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 9rem; 
+        height: 9rem;
+        background: linear-gradient(135deg, var(--accent) 0%, hsl(225, 90%, 60%) 100%);
+        border: 2px solid var(--card-border);
+        border-radius: 50%; 
+        overflow: hidden;
+        position: relative;
+        transition: width var(--transition-normal), height var(--transition-normal), border-radius var(--transition-normal);
+    }
+
+    @media (min-width: 48rem) {
+        .avatar-container {
+            padding: 0.75rem 0.75rem 0 0.75rem;
+        }
+        .avatar-box {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            border-radius: calc(var(--card-radius) - 0.5rem); 
+        }
+    }
+
+    .avatar-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-fallback {
+        display: none;
+        position: absolute;
+        inset: 0;
+        align-items: center;
+        justify-content: center;
+        color: var(--bg-color);
+    }
+
+    .avatar-fallback :global(.icon-code) {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem;
+        width: 100%;
+    }
+
+    .profile-name {
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    .profile-bio {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+    }
+
+    .social-links {
+        display: flex;
+        column-gap: 0.75rem;
+    }
+
+    .social-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: var(--btn-radius);
+        background-color: var(--primary-700);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        transition: transform var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .social-btn :global(.lucide-svg) {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .social-btn:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    /* 카테고리 카드 */
+    .categories-card {
+        padding: 1.5rem;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        column-gap: 0.6rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--card-border);
+        padding-bottom: 0.75rem;
+    }
+
+    .card-header :global(.icon) {
+        color: var(--accent);
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .card-header h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .category-list {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.5rem;
+    }
+
+    .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        border-radius: var(--btn-radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: color var(--transition-fast), background-color var(--transition-fast), padding-left var(--transition-fast);
+    }
+
+    .category-item:hover {
+        background-color: var(--primary-700);
+        color: var(--accent);
+        padding-left: 1rem;
+    }
+
+    .category-count {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 9999px;
+        background-color: var(--primary-700);
+        border: 1px solid var(--card-border);
+        color: var(--text-muted);
+    }
+
+    .category-item:hover .category-count {
+        border-color: var(--accent);
+        color: var(--accent);
+        background-color: rgba(0, 150, 255, 0.1);
+    }
+
+    /* 태그 카드 */
+    .tags-card {
+        padding: 1.5rem;
+    }
+
+    .tags-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.6rem;
+        background-color: var(--primary-700);
+        border-radius: 1rem;
+        border: 1px solid var(--card-border);
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        transition: all var(--transition-fast);
+    }
+
+    .tag-badge:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background-color: rgba(0, 150, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .tag-count {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        opacity: 0.7;
+    }
+</style>

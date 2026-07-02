@@ -1,0 +1,178 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { SITE, SOCIALS } from "@src/config";
+
+export const prerender = true;
+---
+
+<Layout title={`About - ${SITE.title}`}>
+    <div class="about-container">
+        <div class="profile-header">
+            <div>
+                <h1>{SITE.author}</h1>
+                <p class="subtitle">{SITE.bio}</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2>안녕하세요.</h2>
+            <p>
+                요즘은 AI가 코딩을 참 잘하는 시대입니다. 하지만 완성된 코드를 쉽게 얻을 수 있을수록, '왜 그렇게 동작하는가?'에 대한 <strong>컴퓨터 과학의 기초와 원리</strong>를 이해하는 것이 더욱 중요해진다고 생각합니다.
+            </p>
+            <p>
+                이 공간은 거창한 성장기라기보다는, 새로운 기술을 공부하고 다양한 분야를 탐구하며 얻은 지식들이 휘발되지 않도록 묶어두는 저만의 개인 아카이브입니다.
+            </p>
+
+            <h2>넓게 탐구하는 관심사 & 주요 프로젝트</h2>
+            <p>특정 언어나 프레임워크에 얽매이기보다는, 기술의 전체적인 흐름을 파악하기 위해 호기심이 이끄는 대로 폭넓게 탐구하고 있습니다. 아래는 그동안 흥미를 가지고 진행해 온 주요 프로젝트와 경험들입니다.</p>
+
+            <div class="project-grid">
+                <a href="https://github.com/jhan117/mU-Code-Interpreter" target="_blank" class="project-card">
+                    <h3>mU Code Interpreter <span>(C / GTK3)</span></h3>
+                    <p>34개의 명령어셋을 지원하는 GUI/CLI 통합 인터프리터입니다. 레지스터와 메모리 변화 시각화를 구현하고 AppImage로 배포하는 과정을 경험했습니다.</p>
+                </a>
+
+                <a href="https://github.com/jhan117/product-feedback-app" target="_blank" class="project-card">
+                    <h3>Product Feedback App <span>(React / TS)</span></h3>
+                    <p>Firebase 연동 CRUD 웹 애플리케이션입니다. 상태 관리 최적화를 위해 Redux Thunk를 도입하고 전체 코드를 TypeScript로 리팩토링한 경험이 있습니다.</p>
+                </a>
+                
+                <a href="https://github.com/jhan117/Pebble-Pal" target="_blank" class="project-card">
+                    <h3>Pebble Pal <span>(Dart / Flutter)</span></h3>
+                    <p>Flutter 프레임워크를 활용해 개발한 크로스 플랫폼 모바일 메신저 앱(GrayTalk)입니다. 모바일 앱 생태계와 위젯 기반 UI 구성을 경험했습니다.</p>
+                </a>
+
+                <a href="https://github.com/jhan117/LikeLion-AI-SCHOOL6" target="_blank" class="project-card">
+                    <h3>LikeLion AI School <span>(Python / ML)</span></h3>
+                    <p>멋사 AI 스쿨을 수료하며 진행한 데이터 사이언스 아카이브입니다. 쇼핑몰 매출액 예측 Dacon 경진대회 참여 등 다수의 실무적 ML 프로젝트를 진행했습니다.</p>
+                </a>
+            </div>
+
+            <p style="margin-top: 2rem; line-height: 1.8;">
+                <strong>기타 학부 경험:</strong> 위 메인 프로젝트들 외에도 대학 전공 과제(Cloud-Pet, Game-List 등)를 통해 <strong>Java, Kotlin, Spring Boot</strong>와 <strong>MySQL, MongoDB</strong>를 활용해 REST API 서버를 구축하고 React와 연동하는 풀스택 아키텍처를 학습했습니다.<br>
+                <strong>현재 상태:</strong> 최근에는 <strong>임베디드 시스템</strong>에 흥미를 느껴 하드웨어와 맞닿은 영역을 깊이 있게 들여다보고 있습니다. (물론 언제든 백엔드나 다른 흥미로운 분야로 유연하게 넘어갈 준비가 되어 있습니다!)
+            </p>
+
+            <h2>Contact</h2>
+            <ul style="line-height: 1.8; list-style-type: none; padding: 0;">
+                {SOCIALS.filter((s: any) => s.name !== 'rss').map((social: any) => (
+                    <li>- {social.label}: <a href={social.url} target={social.name === 'mail' ? '_self' : '_blank'}>{social.display || (social.name === 'mail' ? social.url.replace('mailto:', '') : social.url.replace('https://', '').replace('www.', ''))}</a></li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .about-container {
+        padding: 2.5rem;
+        background: var(--card-bg);
+        border-radius: var(--card-radius);
+        border: 1px solid var(--card-border);
+        backdrop-filter: blur(var(--backdrop-blur));
+        -webkit-backdrop-filter: blur(var(--backdrop-blur));
+        box-shadow: var(--shadow-md);
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid var(--card-border);
+    }
+    
+    .profile-header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        color: var(--text-primary);
+    }
+    
+    .subtitle {
+        color: var(--accent);
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+    }
+    
+    .content-section h2 {
+        color: var(--text-primary);
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .project-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .project-card {
+        background: hsla(222, 30%, 15%, 0.45);
+        padding: 1.5rem;
+        border-radius: var(--card-radius);
+        border: 1px solid var(--card-border);
+        transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        text-decoration: none;
+        display: block;
+    }
+
+    .project-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        background-color: hsla(222, 30%, 18%, 0.6);
+        text-decoration: none;
+    }
+
+    
+    :global([data-theme="light"]) .project-card {
+        background: hsla(222, 20%, 94%, 0.7);
+    }
+
+    :global([data-theme="light"]) .project-card:hover {
+        background-color: hsla(222, 20%, 90%, 0.9);
+    }
+
+    .project-card h3 {
+        color: var(--text-primary);
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .project-card h3 span {
+        font-size: 0.85rem;
+        color: var(--accent);
+        font-family: 'Outfit', sans-serif; 
+        font-weight: 600;
+        letter-spacing: 0.03em;
+    }
+
+    .project-card p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 42rem) {
+        .project-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
