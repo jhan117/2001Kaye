@@ -14,7 +14,7 @@ const { currPost, readingTime } = Astro.props;
 
 <div class="post-header-container">
     <div class="time-badge">
-        <Icon name="clock" class="icon" />
+        <Icon name="clock" class="post-header-icon" />
         <span>{timeSince(currPost.data.pubDate)}</span>
     </div>
     <h1 class="post-title">
@@ -52,11 +52,11 @@ const { currPost, readingTime } = Astro.props;
         font-weight: 600;
     }
 
-    :global(.lucide-svg.icon) {
+    .time-badge :global(.post-header-icon) {
         width: 0.85rem;
         height: 0.85rem;
         color: var(--accent);
-    }
+     }
 
     .post-title {
         font-size: 2rem;

@@ -16,11 +16,11 @@ const hasNext = !!page.url.next;
     <nav class="pagination-nav">
         {hasPrev ? (
             <a href={page.url.prev} class="glass-card page-btn" aria-label="Previous Page">
-                <Icon name="chevron-left" class="icon" />
+                <Icon name="chevron-left" class="pagination-icon" />
             </a>
         ) : (
             <span class="glass-card page-btn disabled" aria-label="No Previous Page">
-                <Icon name="chevron-left" class="icon" />
+                <Icon name="chevron-left" class="pagination-icon" />
             </span>
         )}
         
@@ -28,11 +28,11 @@ const hasNext = !!page.url.next;
         
         {hasNext ? (
             <a href={page.url.next} class="glass-card page-btn" aria-label="Next Page">
-                <Icon name="chevron-right" class="icon" />
+                <Icon name="chevron-right" class="pagination-icon" />
             </a>
         ) : (
             <span class="glass-card page-btn disabled" aria-label="No Next Page">
-                <Icon name="chevron-right" class="icon" />
+                <Icon name="chevron-right" class="pagination-icon" />
             </span>
         )}
     </nav>
@@ -93,7 +93,7 @@ const hasNext = !!page.url.next;
         border-radius: var(--btn-radius);
     }
 
-    :global(.lucide-svg.icon) {
+    :global(.lucide-svg.pagination-icon) {
         width: 1.15rem;
         height: 1.15rem;
     }

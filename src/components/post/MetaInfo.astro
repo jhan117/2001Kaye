@@ -15,27 +15,27 @@ const { pubDate, updatedDate, category, tags = [], readingTime } = Astro.props;
 
 <div class="meta-info">
     <div class="meta-item">
-        <Icon name="calendar" class="icon" />
+        <Icon name="calendar" class="meta-icon" />
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
     </div>
     
     {updatedDate && (
         <div class="meta-item" title="최종 수정일">
-            <Icon name="edit" class="icon" />
+            <Icon name="edit" class="meta-icon" />
             <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
         </div>
     )}
 
     {category && (
         <a href={`/category/${category}`} class="meta-item category-link">
-            <Icon name="folder" class="icon" />
+            <Icon name="folder" class="meta-icon" />
             <span>{category}</span>
         </a>
     )}
     
     {readingTime && (
         <div class="meta-item">
-            <Icon name="clock" class="icon" />
+            <Icon name="clock" class="meta-icon" />
             <span>{readingTime}</span>
         </div>
     )}
@@ -65,12 +65,9 @@ const { pubDate, updatedDate, category, tags = [], readingTime } = Astro.props;
         column-gap: 0.4rem;
     }
 
-    :global(.lucide-svg) {
+    .meta-item :global(.meta-icon) {
         width: 0.95rem;
         height: 0.95rem;
-    }
-
-    :global(.icon) {
         color: var(--accent);
     }
 

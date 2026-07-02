@@ -2,17 +2,18 @@
 import Icon from "@components/ui/Icon.astro";
 import { getCollection } from "astro:content";
 import type { Post } from "@types";
-import { getCategories } from "@utils/posts";
+import { getCategories, getTags } from "@utils/posts";
 import { SITE, SOCIALS } from "@src/config";
 
 const posts = await getCollection("posts");
 const categories = getCategories(posts as Post[]);
+const tags = getTags(posts as Post[]);
 ---
 
 <header class="header-wrapper">
     <div class="header-content">
         <a href="/" class="logo-link">
-            <Icon name="house" class="icon" />
+            <Icon name="house" class="header-logo-icon" />
             <p>2001Kaye</p>
         </a>
         <nav class="navigation">
@@ -80,6 +81,21 @@ const categories = getCategories(posts as Post[]);
                 ))}
             </div>
         </div>
+
+        <div class="mobile-divider"></div>
+
+        <!-- Tags Section -->
+        <div class="mobile-nav-section">
+            <h4 class="menu-title">Tags</h4>
+            <div class="mobile-tags">
+                {tags.map((tag) => (
+                    <a href={`/tags/${tag.name}`} class="mobile-tag-item">
+                        <span class="mobile-tag-name">#{tag.name}</span>
+                        <span class="mobile-tag-count">{tag.count}</span>
+                    </a>
+                ))}
+            </div>
+        </div>
     </div>
 </header>
 
@@ -136,7 +152,7 @@ const categories = getCategories(posts as Post[]);
         transform: scale(1.03);
     }
 
-    .logo-link :global(.icon) {
+    .logo-link :global(.header-logo-icon) {
         width: 1.35rem;
         height: 1.35rem;
     }
@@ -203,7 +219,7 @@ const categories = getCategories(posts as Post[]);
     }
 
     /* 태블릿 뷰 */
-    @media (min-width: 42rem) {
+    @media (min-width: 48rem) {
         .navigation {
             display: flex;
         }
@@ -256,6 +272,12 @@ const categories = getCategories(posts as Post[]);
 
     .mobile-nav.active {
         display: flex;
+    }
+
+    @media (min-width: 48rem) {
+        .mobile-nav {
+            display: none !important;
+        }
     }
 
     .mobile-nav-section {
@@ -400,6 +422,45 @@ const categories = getCategories(posts as Post[]);
         border-color: var(--accent);
         color: var(--accent);
         background-color: rgba(0, 150, 255, 0.1);
+    }
+
+    /* 모바일 태그 스타일 */
+    .mobile-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .mobile-tag-item {
+        display: flex;
+        align-items: center;
+        column-gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        background-color: var(--primary-700);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 9999px;
+        text-decoration: none;
+        transition: all var(--transition-fast);
+    }
+
+    .mobile-tag-item:hover {
+        border-color: var(--accent);
+        background-color: rgba(0, 150, 255, 0.1);
+        color: var(--accent);
+        transform: translateY(-1px);
+    }
+
+    .mobile-tag-count {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+    }
+
+    .mobile-tag-item:hover .mobile-tag-count {
+        color: var(--accent);
     }
 </style>
 
