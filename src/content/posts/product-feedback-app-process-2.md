@@ -1,7 +1,7 @@
 ---
 title: "Product Feedback App 개발기 2: 반응형 레이아웃 구성 및 정렬·필터링 디버깅"
 pubDate: 2022-12-07
-updatedDate: 2022-12-20
+updatedDate: 2026-07-03
 description: "모바일 우선(Mobile-first) 레이아웃 재구성, Firebase 연동, 정렬/필터링 조건 상태 지연 업데이트 현상 해결 기록"
 category: "Project"
 tags: ["CSS", "Responsive Web", "Firebase", "State Management"]

@@ -1,6 +1,7 @@
 ---
 title: "Product Feedback App 개발기 4: 생성·수정 폼 공용화 및 지연 데이터 검증 해결"
 pubDate: 2022-12-18
+updatedDate: 2026-07-03
 description: "피드백 생성 및 수정 화면의 컴포넌트 재사용 설계 및 API 요청 변경 결과 수신 대기 안정화 과정"
 category: "Project"
 tags: ["React", "State Management", "Component Design"]

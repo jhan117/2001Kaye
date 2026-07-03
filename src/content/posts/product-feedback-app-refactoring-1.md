@@ -1,7 +1,7 @@
 ---
 title: "Product Feedback App 1차 리팩토링: TypeScript 도입 및 Redux Toolkit 설계"
 pubDate: 2023-01-09
-updatedDate: 2023-02-09
+updatedDate: 2026-07-03
 description: "React 웹 앱의 TypeScript 포팅 과정 중 마주한 각종 타입 선언 이슈 해결 및 Redux Toolkit 비동기 상태 관리 설계 회고"
 category: "Project"
 tags: ["React", "TypeScript", "Redux", "Testing"]

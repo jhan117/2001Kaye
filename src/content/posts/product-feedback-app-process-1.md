@@ -1,6 +1,7 @@
 ---
 title: "Product Feedback App 개발기 1: React 기초 및 전역 상태 관리 설계"
 pubDate: 2022-11-21
+updatedDate: 2026-07-03
 description: "React 기초 구조 설계, SVG 활용, React Router v6 도입 및 데이터 전달과 전역 상태 관리 설계 과정"
 category: "Project"
 tags: ["React", "React Router", "State Management"]

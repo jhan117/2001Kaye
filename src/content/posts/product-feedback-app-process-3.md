@@ -1,7 +1,7 @@
 ---
 title: "Product Feedback App 개발기 3: Detail Page 컴포넌트 설계 및 비동기 상태 제어"
 pubDate: 2022-12-14
-updatedDate: 2022-12-26
+updatedDate: 2026-07-03
 description: "상세 페이지의 컴포넌트 모듈화, 모바일/데스크탑 대응 레이아웃 구성 및 Fetch 비동기 상태 동기화 작업"
 category: "Project"
 tags: ["React", "JavaScript", "Asynchronous"]
