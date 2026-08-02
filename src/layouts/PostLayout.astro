@@ -94,6 +94,15 @@ const { currPost, prevPost, nextPost, headings = [], readingTime } = Astro.props
         margin-bottom: 1.25rem;
     }
 
+    .markdown-content :global(strong), .markdown-content :global(b) {
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .markdown-content :global(em), .markdown-content :global(i) {
+        font-style: italic;
+    }
+
     .markdown-content :global(h2) {
         font-size: 1.5rem;
         font-weight: 700;
@@ -109,6 +118,14 @@ const { currPost, prevPost, nextPost, headings = [], readingTime } = Astro.props
         font-weight: 700;
         margin-top: 2rem;
         margin-bottom: 0.75rem;
+        color: var(--text-primary);
+    }
+
+    .markdown-content :global(h4) {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
         color: var(--text-primary);
     }
 

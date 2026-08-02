@@ -8,7 +8,6 @@ const posts = defineCollection({
         description: z.string().optional().default(""),
         category: z.string().optional().default("Uncategorized"),
         tags: z.array(z.string()).optional().default([]),
-        image: z.string().optional(),
         draft: z.boolean().optional().default(false),
     }),
 });

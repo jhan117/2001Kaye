@@ -12,7 +12,6 @@ pubDate: ${date}
 category: "Uncategorized"
 tags: ["Tag1", "Tag2"]
 draft: true
-image: ""
 ---
 
 여기에 글을 작성하세요.`;
